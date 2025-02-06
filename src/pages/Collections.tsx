@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 const collections = [
   {
     id: 1,
-    name: 'Ankara Dresses',
-    description: 'Vibrant African print dresses for any occasion',
+    name: 'Classic Africa Wears',
+    description: 'Vibrant African print shoe for any occasion',
     image: 'https://images.unsplash.com/photo-1544441892-794166f1e3be?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
   },
   {
     id: 2,
-    name: 'Modern Fusion',
+    name: 'Africa Modern Fusion',
     description: 'Contemporary styles with African inspiration',
     image: 'https://images.unsplash.com/photo-1509319117193-57bab727e09d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
   },
@@ -22,7 +22,7 @@ const collections = [
   },
   {
     id: 4,
-    name: 'Accessories',
+    name: 'Classic Accessories',
     description: 'Complete your look with our African-inspired accessories',
     image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
   }
@@ -30,14 +30,14 @@ const collections = [
 
 function Collections() {
   return (
-    <div className="bg-white">
+    <div className="bg-white pb-[7.99%] ">
       {/* Hero Section */}
-      <div className="relative">
+      <div className="relative ">
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
             alt="Collections hero"
-            className="w-full h-96 object-cover"
+            className="w-full h-[37dvh] object-cover"
           />
           <div className="absolute inset-0 bg-gray-900 bg-opacity-60"></div>
         </div>

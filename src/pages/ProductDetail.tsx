@@ -104,7 +104,7 @@ function ProductDetail() {
                 <img
                   src={product.images[selectedImage]}
                   alt={product.name}
-                  className="h-full w-full object-cover object-center"
+                  className="h-[65dvh] w-full object-cover object-center"
                 />
               )}
             </div>

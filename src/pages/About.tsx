@@ -9,7 +9,7 @@ function About() {
           <img
             src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
             alt="About hero"
-            className="w-full h-96 object-cover"
+            className="w-full 2xl:h-[30dvh] lg:h-[30dvh] md:h-[27dvh] sm:h-[31dvh] h-[31dvh] object-cover"
           />
           <div className="absolute inset-0 bg-gray-900 bg-opacity-60"></div>
         </div>

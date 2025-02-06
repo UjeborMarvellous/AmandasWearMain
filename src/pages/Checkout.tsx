@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { supabase } from '../lib/supabase';
 import { useStore } from '../store/useStore';
+import { sendOrderNotification } from '../lib/notifications';
 
 function Checkout() {
   const navigate = useNavigate();
@@ -35,14 +36,13 @@ function Checkout() {
     try {
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       if (authError) throw authError;
-
+      
       if (!user) {
         navigate('/auth?returnTo=/checkout');
         return;
       }
       setUser(user);
-
-      // Pre-fill email if available
+      
       if (user.email) {
         setFormData(prev => ({ ...prev, email: user.email }));
       }
@@ -53,75 +53,108 @@ function Checkout() {
     }
   }
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    setError(''); // Clear error when user makes changes
+    setError('');
   };
 
   const validateForm = () => {
-    if (!formData.email || !formData.name || !formData.address ||
-      !formData.city || !formData.state || !formData.zipCode || !formData.country) {
+    if (!formData.email || !formData.name || !formData.address || 
+        !formData.city || !formData.state || !formData.zipCode || !formData.country) {
       setError('Please fill in all required fields');
       return false;
     }
     return true;
   };
 
-  const handleSubmit = async (e) => {
+  const createOrder = async () => {
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError) throw new Error('Authentication error. Please log in again.');
+    if (!user) throw new Error('Please log in to complete your purchase.');
+
+    // Get user's profile ID
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', user.id)
+      .single();
+
+    if (profileError) throw new Error('Failed to get user profile.');
+
+    // Create order in Supabase
+    console.log('Creating order in Supabase...');
+    const { data: insertedOrders, error: orderError } = await supabase
+      .from('orders')
+      .insert([{
+        user_id: user.id,
+        user_profile_id: profile.id,
+        status: 'pending',
+        total_amount: total,
+        shipping_address: formData
+      }])
+      .select('*');
+
+    if (orderError) {
+      console.error('Failed to create order:', orderError);
+      throw new Error('Failed to create order. Please try again.');
+    }
+
+    const order = insertedOrders?.[0];
+    if (!order) {
+      console.error('No order was created:', insertedOrders);
+      throw new Error('Failed to create order. Please try again.');
+    }
+
+    console.log('Order created successfully:', order);
+
+    // Create order items
+    const orderItems = cart.map(item => ({
+      order_id: order.id,
+      product_id: item.product.id,
+      quantity: item.quantity,
+      size: item.size,
+      color: item.color,
+      price_at_time: item.product.price
+    }));
+
+    const { error: itemsError } = await supabase
+      .from('order_items')
+      .insert(orderItems);
+
+    if (itemsError) {
+      // If order items creation fails, delete the order
+      await supabase.from('orders').delete().eq('id', order.id);
+      throw new Error('Failed to create order items. Please try again.');
+    }
+
+    // Send order notification
+    try {
+      await sendOrderNotification(order.id);
+    } catch (error) {
+      console.error('Failed to send order notification:', error);
+      // Don't throw here - we don't want to stop the checkout process
+      // if notification fails
+    }
+
+    return order;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-
+    
     setLoading(true);
     setError('');
 
     try {
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
-      if (authError) throw new Error('Authentication error. Please log in again.');
-      if (!user) throw new Error('Please log in to complete your purchase.');
+      // First create the order
+      const order = await createOrder();
 
-      // Create order in Supabase
-      const { data: order, error: orderError } = await supabase
-        .from('orders')
-        .insert({
-          user_id: user.id,
-          status: 'pending',
-          total_amount: total,
-          shipping_address: formData,
-        })
-        .select()
-        .single();
-
-      if (orderError) {
-        throw new Error('Failed to create order. Please try again.');
-      }
-
-      if (!order) {
-        throw new Error('No order was created');
-      }
-
-      // Create order items
-      const orderItems = cart.map(item => ({
-        order_id: order.id,
-        product_id: item.product.id,
-        quantity: item.quantity,
-        size: item.size,
-        color: item.color,
-        price_at_time: item.product.price
-      }));
-
-      const { error: itemsError } = await supabase
-        .from('order_items')
-        .insert(orderItems);
-
-      if (itemsError) {
-        throw new Error('Failed to create order items. Please try again.');
-      }
-
-      // Create Stripe checkout session
+      // Then create Stripe checkout session with the order ID
       const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/create-checkout-session`, {
         method: 'POST',
         headers: {
@@ -152,7 +185,7 @@ function Checkout() {
 
       const session = await response.json();
       const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
-
+      
       if (!stripe) {
         throw new Error('Failed to load payment processor');
       }

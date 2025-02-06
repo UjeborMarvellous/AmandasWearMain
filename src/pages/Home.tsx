@@ -1,41 +1,44 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import ModelImage from '../components/Images/Model.png';
 
 function Home() {
   return (
-    <div className="bg-white">
+    <div className=" fixed w-full h-screen">
       {/* Hero Section */}
-      <div className="relative h-screen">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=2850&q=80"
-            alt="Fashion hero"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gray-900 bg-opacity-40"></div>
-        </div>
-        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            FASHION MEETS LUXURY
-          </h1>
-          <p className="mt-6 text-xl text-white max-w-3xl">
-            Discover our curated collection of premium clothing that combines style, comfort, and sophistication.
-          </p>
-          <div className="mt-10">
-            <Link
-              to="/products"
-              className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-gray-900 bg-white hover:bg-gray-50"
-            >
-              Shop Now
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
+      <div className="h-screen">
+        <h1 className="text-[550%] 2xl:mt-[5%] lg:mt-[5%] md:mt-[26%] sm:mt-[10%] mt-[10%] text-center font-extrabold tracking-tight text-white sm:text-5xl md:text-[6.5rem] lg:text-[9rem] 2xl:text-[1250%]">
+          FASHION MEETS
+        </h1>
+        <div className="con ">
+          <div className="absolute inset-0  scale-100 2xl:ml-[6%]">
+            <img
+              src={ModelImage}
+              alt="Fashion hero"
+              className="w-full h-full object-cover scale-110 "
+            />
+            <div className="absolut inset-0 bg-opacity-90"></div>
+          </div>
+          <div className=" relative mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 2xl:mt-auto lg:mt-auto md:mt-auto sm:-mt-[14%] -mt-[14%]">
+            <h1 className="text-[550%] text-center font-extrabold tracking-tight text-white sm:text-5xl md:text-[6.5rem] lg:text-[9rem] 2xl:text-[14rem]">
+              LUXURY
+            </h1>
+            <div className="2xl:mt-[7%] lg:mt-[7%] md:mt-[7%] sm:mt-[3%] mt-[3%] text-center">
+              <Link
+                to="/products"
+                className="inline-flex items-center 2xl:px-32 lg:px-32 md:px-32 sm:px-32 px-10 font-semibold py-3 border border-transparent text-base rounded-md text-gray-900 bg-white hover:bg-BWhite/90 hover:text-white"
+              >
+                Shop Now
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Featured Categories */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-12">
           Featured Collections
         </h2>
@@ -54,7 +57,7 @@ function Home() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { Instagram, Facebook, Twitter } from 'lucide-react';
 
 function Footer() {
   return (
-    <footer className="bg-white border-t">
+    <footer className="bg-white border-t -mb-[20%] ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
@@ -73,6 +73,9 @@ function Footer() {
                 <Twitter className="h-5 w-5" />
               </a>
             </div>
+            <p className="text-sm text-gray-600">
+              Follow us for updates, styling tips, and exclusive offers.
+            </p>
           </div>
         </div>
 

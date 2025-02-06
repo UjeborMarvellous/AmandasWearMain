@@ -43,7 +43,7 @@ function Products() {
 
   return (
     <div className="bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-[90%] mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-serif">Our Collection</h1>
@@ -125,11 +125,12 @@ function Products() {
                   <img
                     src={product.images[0]}
                     alt={product.name}
-                    className="h-full w-full object-cover object-center group-hover:opacity-75"
+                    className="h-[40dvh] w-full object-cover object-center group-hover:opacity-75"
                   />
                 </div>
                 <div className="mt-4 space-y-1">
                   <h3 className="text-sm text-gray-700">{product.name}</h3>
+                  <h3 className="text-sm text-gray-700">{product.description}</h3>
                   <p className="text-lg font-medium text-gray-900">
                     ${product.price.toFixed(2)}
                   </p>

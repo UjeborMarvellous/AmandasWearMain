@@ -11,6 +11,7 @@
     "server": "node server.js"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.1.0",
     "@stripe/stripe-js": "^2.4.0",
     "@supabase/supabase-js": "^2.39.3",
     "cors": "^2.8.5",

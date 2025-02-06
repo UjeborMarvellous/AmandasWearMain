@@ -4,6 +4,10 @@ export default {
   theme: {
     extend: {
       colors: {
+        BWhite: "#221510",
+        TextColor: "#E0DFDB",
+        BtnColor: "#130a0b",
+        foreground: "var(--foreground)",
         beige: {
           50: '#fdf8f6',
           100: '#f2e8e5',
