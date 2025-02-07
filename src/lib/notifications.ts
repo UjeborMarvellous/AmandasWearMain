@@ -1,9 +1,5 @@
 import emailjs from '@emailjs/browser';
-
-// Replace these with your EmailJS configuration
-const EMAILJS_SERVICE_ID = 'service_3z0ov97';
-const EMAILJS_TEMPLATE_ID = 'template_1q783ye';
-const EMAILJS_PUBLIC_KEY = 'ibHLyv5TzwyPyAyO5';
+import { supabase } from './supabase';
 
 export async function sendOrderNotification(orderId: string) {
   try {
@@ -48,30 +44,34 @@ export async function sendOrderNotification(orderId: string) {
       - Price: $${item.price_at_time}
     `).join('\n');
 
+    // Format shipping address
+    const shippingAddress = `
+      ${orderData.shipping_address.name}
+      ${orderData.shipping_address.address}
+      ${orderData.shipping_address.city}, ${orderData.shipping_address.state} ${orderData.shipping_address.zipCode}
+      ${orderData.shipping_address.country}
+    `.trim();
+
     // Prepare email template parameters
     const templateParams = {
       to_email: 'amandaswearsau@gmail.com',
+      from_name: 'Amandaswears Boutique',
       order_id: orderId,
       order_date: new Date(orderData.created_at).toLocaleString(),
       order_status: orderData.status,
-      total_amount: orderData.total_amount,
+      total_amount: `$${orderData.total_amount.toFixed(2)}`,
       customer_name: profile.full_name,
       customer_email: profile.email,
-      shipping_address: `
-        ${orderData.shipping_address.name}
-        ${orderData.shipping_address.address}
-        ${orderData.shipping_address.city}, ${orderData.shipping_address.state} ${orderData.shipping_address.zipCode}
-        ${orderData.shipping_address.country}
-      `,
+      shipping_address: shippingAddress,
       order_items: formattedItems
     };
 
     // Send email using EmailJS
     const response = await emailjs.send(
-      EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID,
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
       templateParams,
-      EMAILJS_PUBLIC_KEY
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
     );
 
     if (response.status !== 200) {

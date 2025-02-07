@@ -18,7 +18,7 @@ function Navbar() {
 
     const handleScroll = () => {
       if (window.scrollY > 50) {
-        setBgColor('bg-BWhite/90'); // Change to dark color
+        setBgColor('bg-BtnColor'); // Change to dark color
       } else {
         setBgColor('bg-BWhite/10'); // Default color
       }
@@ -50,7 +50,7 @@ function Navbar() {
   };
 
   return (
-    <nav className={`${bgColor} text-white top-0 sticky z-50 shadow-2xl`}>
+    <nav className={`${bgColor} bg-BWhite/80 text-white top-0 sticky z-50 shadow-2xl`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 rounded-2xl lg:px-8">
         <div className="flex justify-between h-20">
           <div className="flex-1 flex items-center justify-between">
