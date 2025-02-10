@@ -30,7 +30,7 @@ const collections = [
 
 function Collections() {
   return (
-    <div className="bg-white pb-[7.99%] ">
+    <div className="pb-[7.99%] ">
       {/* Hero Section */}
       <div className="relative ">
         <div className="absolute inset-0">

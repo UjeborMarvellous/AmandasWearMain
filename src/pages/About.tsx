@@ -2,7 +2,7 @@ import React from 'react';
 
 function About() {
   return (
-    <div className="bg-white">
+    <div className="">
       {/* Hero Section */}
       <div className="relative">
         <div className="absolute inset-0">

@@ -5,8 +5,8 @@ export default {
     extend: {
       colors: {
         BWhite: "#221510",
-        TextColor: "#E0DFDB",
-        BtnColor: "#130a0b",
+        TextColor: "#2b1e18",
+        BtnColor: "#4b423d",
         foreground: "var(--foreground)",
         beige: {
           50: '#fdf8f6',

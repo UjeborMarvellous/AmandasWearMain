@@ -19,7 +19,7 @@ function Layout() {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-BWhite/80">
+    <div className="min-h-screen bg-gray-500/10">
       <Navbar />
       <main className=''>
         <Routes>
