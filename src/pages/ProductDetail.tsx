@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Product } from '../types';
 import { Star, ShoppingBag } from 'lucide-react';
@@ -17,11 +17,13 @@ interface Review {
 
 function ProductDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [loading, setLoading] = useState(true);
+  const [addingToCart, setAddingToCart] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const addToCart = useStore((state) => state.addToCart);
 
@@ -79,32 +81,45 @@ function ProductDetail() {
     }
   }
 
-  function handleAddToCart() {
+  async function handleAddToCart() {
     if (!product || !selectedSize || !selectedColor) return;
     
-    addToCart({
-      product,
-      quantity: 1,
-      size: selectedSize,
-      color: selectedColor,
-    });
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      navigate('/auth?returnTo=' + window.location.pathname);
+      return;
+    }
+
+    setAddingToCart(true);
+    try {
+      await addToCart({
+        product,
+        quantity: 1,
+        size: selectedSize,
+        color: selectedColor,
+      });
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    } finally {
+      setAddingToCart(false);
+    }
   }
 
   if (loading) return <div className="text-center py-12">Loading...</div>;
   if (!product) return <div className="text-center py-12">Product not found</div>;
 
   return (
-    <div className="">
+    <div className="bg-gray-50 ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product Images */}
           <div className="space-y-4">
-            <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg">
+            <div className="aspect-w-1 aspect-h-1 h-[75dvh] w-full overflow-hidden rounded-lg">
               {product.images && product.images.length > 0 && (
                 <img
                   src={product.images[selectedImage]}
                   alt={product.name}
-                  className="h-[65dvh] w-full object-cover object-center"
+                  className=" w-full object-cover object-center"
                 />
               )}
             </div>
@@ -187,11 +202,17 @@ function ProductDetail() {
             <div className="border-t pt-6">
               <button
                 onClick={handleAddToCart}
-                disabled={!selectedSize || !selectedColor}
+                disabled={!selectedSize || !selectedColor || addingToCart}
                 className="w-full bg-gray-900 text-white py-3 px-4 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-800 disabled:bg-gray-400"
               >
-                <ShoppingBag className="h-5 w-5" />
-                <span>Add to Cart</span>
+                {addingToCart ? (
+                  <span>Adding to Cart...</span>
+                ) : (
+                  <>
+                    <ShoppingBag className="h-5 w-5" />
+                    <span>Add to Cart</span>
+                  </>
+                )}
               </button>
             </div>
 

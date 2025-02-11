@@ -121,11 +121,11 @@ function Products() {
                 to={`/product/${product.id}`}
                 className="group"
               >
-                <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200">
+                <div className="aspect-w-1 h-[50dvh] aspect-h-1 w-full overflow-hidden rounded-lg">
                   <img
                     src={product.images[0]}
                     alt={product.name}
-                    className="h-[40dvh] w-full object-cover object-center group-hover:opacity-75"
+                    className="w-full h-[60dvh] object-cover scale-100 object-center group-hover:opacity-75"
                   />
                 </div>
                 <div className="mt-4 space-y-1">
