@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, Minus, Plus } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { supabase } from '../lib/supabase';
+import { BsArrowLeft } from "react-icons/bs";
 
 function Cart() {
   const { cart, removeFromCart, updateQuantity } = useStore();
@@ -52,12 +53,19 @@ function Cart() {
 
   return (
     <div className="bg-white">
+      <Link
+        to={cart.length > 0 ? `/product/${cart[0].product.id}` : '#'}
+        className="flex ml-10 pt-6 items-center text-gray-500 hover:text-red-900 font-bold"
+      >
+        <BsArrowLeft className="h-6 w-6" />
+        <span className="ml-2">Back to Product</span>
+      </Link>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-3xl font-serif mb-8">Shopping Cart</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Cart Items */}
-          <div className="lg:col-span-8">
+          <div className="lg:col-span-8 ">
             <div className="space-y-6">
               {cart.map((item) => (
                 <div
@@ -70,7 +78,7 @@ function Cart() {
                     className="w-24 h-24 object-cover rounded-md"
                   />
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-medium">{item.product.name}</h3>
+                    <h3 className="2xl:text-lg lg:text-lg md:text-lg sm:text-sm text-sm font-medium">{item.product.name}</h3>
                     <p className="text-sm text-gray-600">
                       Size: {item.size} | Color: {item.color}
                     </p>

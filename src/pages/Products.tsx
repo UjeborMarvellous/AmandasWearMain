@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Product } from '../types';
 import { Filter, SlidersHorizontal } from 'lucide-react';
+import { FaCartPlus } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
+import { IoIosStar } from "react-icons/io";
 
 function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -46,7 +49,7 @@ function Products() {
       <div className="max-w-[90%] mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-serif">Our Collection</h1>
+          <h1 className="text-3xl font-bold">Our Collection</h1>
           <button
             onClick={() => setShowFilters(!showFilters)}
             className="flex items-center text-gray-600 hover:text-gray-900"
@@ -116,27 +119,48 @@ function Products() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {products.map((product) => (
-              <Link
-                key={product.id}
-                to={`/product/${product.id}`}
-                className="group"
-              >
-                <div className="aspect-w-1 h-[50dvh] aspect-h-1 w-full overflow-hidden rounded-lg">
-                  <img
-                    src={product.images[0]}
-                    alt={product.name}
-                    className="w-full h-[60dvh] object-cover scale-100 object-center group-hover:opacity-75"
-                  />
+              <div key={product.id} className="group put bg-[#e7e3e3]/20 hover:shadow-2xl rounded-xl p-1">
+                {/* Wrap Only the Image in Link */}
+                <Link to={`/product/${product.id}`} className="block">
+                  <div className="relative shadow-2xl aspect-w-1 h-[50dvh] aspect-h-1 w-full overflow-hidden rounded-lg group">
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      className="w-full h-[60dvh] object-cover scale-100 object-center"
+                    />
+                    {/* Overlay on Hover */}
+                    <div className="absolute h-full w-full bg-black/10 top-0 right-0 transition-opacity duration-300 flex justify-end p-4">
+                      {/* Buttons on Right */}
+                      <div className="flex flex-col space-y-4">
+                        <button className="text-2xl shadow-2xl px-4 py-4 text-BWhite bg-white rounded-full hover:bg-BWhite/40 hover:text-white">
+                          <FaCartPlus />
+                        </button>
+                        <button className="text-2xl shadow-2xl px-4 py-4 text-BWhite bg-white rounded-full hover:bg-BWhite/40 hover:text-white">
+                          <FaHeart />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+
+                {/* Keep the Text Outside the Link */}
+                <div className="p-4">
+                  <div className="flex justify-between">
+                    <h3 className="font-bold text-gray-800 text-lg truncate">{product.name}</h3>
+                    <p className="text-yellow-400 my-auto font-bold flex gap-2">
+                      <IoIosStar className="mt-1" />
+                      <span className="text-black">{product.ratio}</span>
+                    </p>
+                  </div>
+                  <p className="font-extralight text-gray-800 truncate">{product.description}</p>
+                  <Link to={`/product/${product.id}`}>
+                    <p className="font-extralight text-gray-800 text-xs truncate">Read more....</p>
+                  </Link>
+                  <p className="text-gray-600 font-bold mt-2">${product.price}</p>
                 </div>
-                <div className="mt-4 space-y-1">
-                  <h3 className="text-sm text-gray-700">{product.name}</h3>
-                  <h3 className="text-sm text-gray-700">{product.description}</h3>
-                  <p className="text-lg font-medium text-gray-900">
-                    ${product.price.toFixed(2)}
-                  </p>
-                </div>
-              </Link>
+              </div>
             ))}
+
           </div>
         )}
       </div>

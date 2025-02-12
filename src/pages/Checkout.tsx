@@ -4,9 +4,12 @@ import { supabase } from "../lib/supabase";
 import { useStore } from "../store/useStore";
 import { sendOrderNotification } from "../lib/notifications";
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
+import { BsArrowLeft } from "react-icons/bs";
+
 
 function Checkout() {
-  
+
   const navigate = useNavigate();
 
   const { cart, clearCart } = useStore();
@@ -63,9 +66,8 @@ function Checkout() {
   };
 
   const getInputClass = (field: string) => {
-    return `mt-1 outline-none block w-full rounded-md py-2 px-6 border-b shadow-sm focus:border-green-500 ${
-      !formData[field as keyof typeof formData] && submitted ? 'border-red-500' : 'border-gray-600/60'
-    }`;
+    return `mt-1 outline-none block w-full rounded-md py-2 px-6 border-b shadow-sm focus:border-green-500 ${!formData[field as keyof typeof formData] && submitted ? 'border-red-500' : 'border-gray-600/60'
+      }`;
   };
 
   const validateForm = () => {
@@ -237,6 +239,10 @@ function Checkout() {
 
   return (
     <div className="">
+      <Link to="/cart" className="flex ml-10 pt-6 items-center text-gray-500 hover:text-red-900 font-bold">
+        <BsArrowLeft className="h-6 w-6 " />{' '}
+        <span className="ml-2">Back to Cart</span>
+      </Link>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-3xl font-serif mb-8">Checkout</h1>
 
