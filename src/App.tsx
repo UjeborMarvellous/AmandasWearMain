@@ -19,10 +19,12 @@ import SizeGuide from './pages/SizeGuide';
 function Layout() {
   const location = useLocation();
 
+  const hideNavAndFooter = location.pathname === '/auth';
+
   return (
     <AuthProvider>
       <div className="min-h-screen bg-gray-500/10">
-        <Navbar />
+        {!hideNavAndFooter && <Navbar />}
         <main className=''>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -39,7 +41,7 @@ function Layout() {
             <Route path="/size-guide" element={<SizeGuide />} />
           </Routes>
         </main>
-        {location.pathname !== '/' && <Footer />}
+        {!hideNavAndFooter && location.pathname !== '/' && <Footer />}
       </div>
     </AuthProvider >
   );

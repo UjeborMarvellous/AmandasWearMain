@@ -4,6 +4,8 @@ import { supabase } from '../lib/supabase';
 import { Product } from '../types';
 import { Star, ShoppingBag } from 'lucide-react';
 import { useStore } from '../store/useStore';
+import { Link } from 'react-router-dom';
+import { BsArrowLeft } from "react-icons/bs";
 
 interface Review {
   id: string;
@@ -41,7 +43,7 @@ function ProductDetail() {
         .select('*')
         .eq('id', id)
         .single();
-      
+
       if (error) throw error;
       if (data) {
         setProduct(data);
@@ -73,7 +75,7 @@ function ProductDetail() {
           )
         `)
         .eq('product_id', id);
-      
+
       if (error) throw error;
       setReviews(data || []);
     } catch (error) {
@@ -83,7 +85,7 @@ function ProductDetail() {
 
   async function handleAddToCart() {
     if (!product || !selectedSize || !selectedColor) return;
-    
+
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       navigate('/auth?returnTo=' + window.location.pathname);
@@ -110,6 +112,10 @@ function ProductDetail() {
 
   return (
     <div className="bg-gray-50 ">
+      <Link to="/products" className="flex ml-10 pt-6 items-center text-gray-500 hover:text-red-900 font-bold">
+        <BsArrowLeft className="h-6 w-6 " />{' '}
+        <span className="ml-2">Back to Products</span>
+      </Link>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product Images */}
@@ -119,7 +125,7 @@ function ProductDetail() {
                 <img
                   src={product.images[selectedImage]}
                   alt={product.name}
-                  className=" w-full object-cover object-center"
+                  className=" w-full h-[95dvh] object-cover object-center"
                 />
               )}
             </div>
@@ -129,9 +135,8 @@ function ProductDetail() {
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`aspect-w-1 aspect-h-1 overflow-hidden rounded-lg ${
-                      selectedImage === index ? 'ring-2 ring-black' : ''
-                    }`}
+                    className={`aspect-w-1 aspect-h-1 overflow-hidden rounded-lg ${selectedImage === index ? 'ring-2 ring-black' : ''
+                      }`}
                   >
                     <img
                       src={image}
@@ -148,7 +153,7 @@ function ProductDetail() {
           <div className="space-y-6">
             <h1 className="text-3xl font-serif">{product.name}</h1>
             <p className="text-2xl font-medium">${product.price.toFixed(2)}</p>
-            
+
             <div className="space-y-4">
               {/* Size Selection */}
               {product.sizes && product.sizes.length > 0 && (
@@ -161,11 +166,10 @@ function ProductDetail() {
                       <button
                         key={size}
                         onClick={() => setSelectedSize(size)}
-                        className={`py-2 text-sm font-medium rounded-md ${
-                          selectedSize === size
+                        className={`py-2 text-sm font-medium rounded-md ${selectedSize === size
                             ? 'bg-gray-900 text-white'
                             : 'bg-white border border-gray-300 text-gray-900 hover:bg-gray-50'
-                        }`}
+                          }`}
                       >
                         {size}
                       </button>
@@ -185,11 +189,10 @@ function ProductDetail() {
                       <button
                         key={color}
                         onClick={() => setSelectedColor(color)}
-                        className={`py-2 text-sm font-medium rounded-md ${
-                          selectedColor === color
+                        className={`py-2 text-sm font-medium rounded-md ${selectedColor === color
                             ? 'bg-gray-900 text-white'
                             : 'bg-white border border-gray-300 text-gray-900 hover:bg-gray-50'
-                        }`}
+                          }`}
                       >
                         {color}
                       </button>
@@ -235,9 +238,8 @@ function ProductDetail() {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-5 w-5 ${
-                            i < review.rating ? 'fill-current' : 'stroke-current'
-                          }`}
+                          className={`h-5 w-5 ${i < review.rating ? 'fill-current' : 'stroke-current'
+                            }`}
                         />
                       ))}
                     </div>

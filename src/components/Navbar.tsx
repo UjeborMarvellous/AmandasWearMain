@@ -4,10 +4,15 @@ import { ShoppingBag, User, Search, LogOut } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { supabase } from '../lib/supabase';
 
+type UserType = {
+  email: string;
+  // Add other properties of the user object if needed
+};
+
 function Navbar() {
   const navigate = useNavigate();
   const cart = useStore((state) => state.cart);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<UserType | null>(null);
   const [bgColor, setBgColor] = useState('bg-BWhite/10');
 
   useEffect(() => {
@@ -34,7 +39,7 @@ function Navbar() {
   async function checkUser() {
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      setUser(user as UserType);
     } catch (error) {
       console.error('Error checking user:', error);
     }
@@ -80,9 +85,6 @@ function Navbar() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <button className="text-white p-2">
-                <Search className="h-5 w-5" />
-              </button>
               {user ? (
                 <div className="flex items-center space-x-4">
                   <span className="text-sm text-white">
