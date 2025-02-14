@@ -178,7 +178,7 @@ function Checkout() {
       navigate(`/order-summary?orderId=${order.id}`);
       // Then create Stripe checkout session with the order ID
       const response = await fetch(
-        `${import.meta.env.SERVER_URL}/api/create-checkout-session`,
+        `${import.meta.env.VITE_SERVER_URL}/api/create-checkout-session`,
         {
           method: "POST",
           headers: {
@@ -210,7 +210,7 @@ function Checkout() {
 
       const session = await response.json();
       const stripe = await loadStripe(
-        import.meta.env.STRIPE_PUBLISHABLE_KEY
+        import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
       );
 
       if (!stripe) {
