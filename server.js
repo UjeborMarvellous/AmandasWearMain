@@ -24,13 +24,13 @@ const supabase = createClient(
 
 // Middleware
 app.use(express.json());
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-    methods: ["GET", "POST"],
-  })
-);
+
+app.use(cors({
+  origin: process.env.CLIENT_URL, // Allow your frontend
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  allowedHeaders: 'Content-Type,Authorization'
+}));
+
 
 // Health check endpoint
 app.get("/", (req, res) => {
