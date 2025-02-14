@@ -6,7 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 
 dotenv.config();
 
-const successUrl = "http://localhost:5173/success";
+const successUrl = "https://www.amandaswears.com/success";
 console.log(successUrl);
 
 
