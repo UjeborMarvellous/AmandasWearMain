@@ -31,6 +31,7 @@ app.use(cors({
   allowedHeaders: 'Content-Type,Authorization'
 }));
 
+app.options('*', cors());
 
 // Health check endpoint
 app.get("/", (req, res) => {
