@@ -15,6 +15,7 @@ import Auth from './pages/Auth';
 import ShippingInfo from './pages/ShippingInfo';
 import Returns from './pages/Returns';
 import SizeGuide from './pages/SizeGuide';
+import Cancel from './pages/CancelOrder';
 
 function Layout() {
   const location = useLocation();
@@ -39,6 +40,7 @@ function Layout() {
             <Route path="/shipping" element={<ShippingInfo />} />
             <Route path="/returns" element={<Returns />} />
             <Route path="/size-guide" element={<SizeGuide />} />
+            <Route path="/cancel" element={<Cancel />} />
           </Routes>
         </main>
         {!hideNavAndFooter && location.pathname !== '/' && <Footer />}
