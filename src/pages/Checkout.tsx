@@ -223,7 +223,7 @@ function Checkout() {
 
       if (stripeError) throw stripeError;
 
-      clearCart();
+      // clearCart();
     } catch (error) {
       console.error("Checkout error:", error);
       // setError(error.message || 'An error occurred during checkout. Please try again.');
