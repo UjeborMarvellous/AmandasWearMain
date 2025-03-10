@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, User, Search, LogOut } from 'lucide-react';
+import { ShoppingBag, User, LogOut } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { supabase } from '../lib/supabase';
+import { auth as firebaseAuth } from '../lib/firebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
 
 type UserType = {
   email: string;
@@ -16,11 +18,28 @@ function Navbar() {
   const [bgColor, setBgColor] = useState('bg-BWhite/10');
 
   useEffect(() => {
-    checkUser();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+    // Listen for Firebase auth state changes
+    const unsubscribeFirebase = onAuthStateChanged(firebaseAuth, (firebaseUser) => {
+      if (firebaseUser && firebaseUser.email) {
+        setUser({ email: firebaseUser.email });
+        // Store email in localStorage
+        localStorage.setItem('userEmail', firebaseUser.email);
+      } else if (!firebaseUser) {
+        // Check localStorage as fallback
+        const storedEmail = localStorage.getItem('userEmail');
+        if (!storedEmail) {
+          setUser(null);
+        }
+      }
     });
 
+    // Check for stored email on initial load
+    const storedEmail = localStorage.getItem('userEmail');
+    if (storedEmail && !user) {
+      setUser({ email: storedEmail });
+    }
+
+    // Scroll event listener for navbar background
     const handleScroll = () => {
       if (window.scrollY > 50) {
         setBgColor('bg-BtnColor'); // Change to dark color
@@ -30,24 +49,21 @@ function Navbar() {
     };
 
     window.addEventListener('scroll', handleScroll);
+    
+    // Cleanup function
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      subscription.unsubscribe();
+      unsubscribeFirebase();
     };
   }, []);
 
-  async function checkUser() {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user as UserType);
-    } catch (error) {
-      console.error('Error checking user:', error);
-    }
-  }
-
   const handleSignOut = async () => {
     try {
-      await supabase.auth.signOut();
+      // Sign out from Firebase
+      await firebaseAuth.signOut();
+      // Clear stored email
+      localStorage.removeItem('userEmail');
+      setUser(null);
       navigate('/');
     } catch (error) {
       console.error('Error signing out:', error);

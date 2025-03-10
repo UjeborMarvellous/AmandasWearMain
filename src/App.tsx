@@ -16,6 +16,8 @@ import ShippingInfo from './pages/ShippingInfo';
 import Returns from './pages/Returns';
 import SizeGuide from './pages/SizeGuide';
 import Cancel from './pages/CancelOrder';
+import WhatsApp from './pages/WhatsAppButton';
+
 
 function Layout() {
   const location = useLocation();
@@ -26,8 +28,10 @@ function Layout() {
     <AuthProvider>
       <div className="min-h-screen bg-gray-500/10">
         {!hideNavAndFooter && <Navbar />}
+        <WhatsApp />
         <main className=''>
           <Routes>
+            <Route path="/*" element={<App />} />
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
             <Route path="/collections" element={<Collections />} />
