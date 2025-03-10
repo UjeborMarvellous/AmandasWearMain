@@ -1,11 +1,16 @@
+'use client';
+
 import React from 'react';
+import ReactCookieBot from 'react-cookiebot';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import ModelImage from '../components/Images/Model.png';
 
+const domainGroupId = '610ba6a1-cac8-47f6-8058-62fbffc6b31d';
 function Home() {
   return (
     <div className=" bg-BWhite/80 fixed w-full h-screen">
+      <ReactCookieBot domainGroupId={domainGroupId} />
       {/* Hero Section */}
       <div className="h-screen">
         <h1 className="text-[550%] 2xl:mt-[5%] lg:mt-[5%] md:mt-[26%] sm:mt-[10%] mt-[10%] text-center font-extrabold tracking-tight text-white sm:text-5xl md:text-[6.5rem] lg:text-[9rem] 2xl:text-[1250%]">
