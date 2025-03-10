@@ -63,7 +63,7 @@ function Footer() {
           <div>
             <h4 className="text-gray-200 font-semibold mb-4">Connect With Us</h4>
             <div className="flex space-x-4 mb-4">
-              <a href="#" className="text-gray-100 hover:text-gray-900">
+              <a href="https://www.instagram.com/amandaswear?utm_source=qr&igsh=N3Z4NWlsdDJla2cw" className="text-gray-100 hover:text-gray-900">
                 <Instagram className="h-5 w-5" />
               </a>
               <a href="#" className="text-gray-100 hover:text-gray-900">
