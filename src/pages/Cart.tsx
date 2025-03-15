@@ -23,9 +23,10 @@ function Cart() {
         // Redirect to auth page with return URL
         navigate('/auth?returnTo=/checkout');
         return;
+      } else {
+        // User is authenticated, proceed to payment
+        navigate('/checkout');
       }
-      // User is authenticated, proceed to checkout
-      navigate('/checkout');
     } catch (error) {
       console.error('Error checking authentication:', error);
       navigate('/auth?returnTo=/checkout');

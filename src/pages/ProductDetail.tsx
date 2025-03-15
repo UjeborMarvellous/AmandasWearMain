@@ -77,7 +77,17 @@ function ProductDetail() {
         .eq('product_id', id);
 
       if (error) throw error;
-      setReviews(data || []);
+      
+      // Transform the data to match your Review interface
+      const formattedReviews: Review[] = (data || []).map((item: any) => ({
+        id: item.id,
+        rating: item.rating,
+        comment: item.comment,
+        created_at: item.created_at,
+        profiles: item.profiles
+      }));
+      
+      setReviews(formattedReviews);
     } catch (error) {
       console.error('Error fetching reviews:', error);
     }
@@ -86,11 +96,11 @@ function ProductDetail() {
   async function handleAddToCart() {
     if (!product || !selectedSize || !selectedColor) return;
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      navigate('/auth?returnTo=' + window.location.pathname);
-      return;
-    }
+    // const { data: { user } } = await supabase.auth.getUser();
+    // if (!user) {
+    //   navigate('/auth?returnTo=' + window.location.pathname);
+    //   return;
+    // }
 
     setAddingToCart(true);
     try {
