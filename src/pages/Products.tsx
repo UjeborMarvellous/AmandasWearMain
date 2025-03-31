@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
 import { Product } from '../types';
-import { Filter, SlidersHorizontal } from 'lucide-react';
+import { SlidersHorizontal } from 'lucide-react';
 import { FaCartPlus } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { IoIosStar } from "react-icons/io";
 
-function Products() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+interface ProductsProps {
+  product: Product[];
+}
+
+function Products({ product }: ProductsProps) {
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(product);
+  const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
     category: '',
     priceRange: '',
@@ -18,30 +21,54 @@ function Products() {
   });
   const [showFilters, setShowFilters] = useState(false);
 
-  useEffect(() => {
-    fetchProducts();
-  }, [filters]);
+  const applyFilters = useCallback(() => {
+    setLoading(true);
+    
+    let result = [...product];
 
-  async function fetchProducts() {
-    try {
-      let query = supabase.from('products').select('*');
 
-      if (filters.category) {
-        query = query.eq('category', filters.category);
-      }
-      if (filters.priceRange) {
-        const [min, max] = filters.priceRange.split('-');
-        query = query.gte('price', min).lte('price', max);
-      }
-
-      const { data, error } = await query;
-      if (error) throw error;
-      setProducts(data || []);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    } finally {
-      setLoading(false);
+    if (filters.category) {
+      result = result.filter(p => p.category_id === filters.category);
     }
+
+    if (filters.priceRange) {
+      const [min, max] = filters.priceRange.split('-').map(Number);
+      result = result.filter(p => p.price >= min && p.price <= max);
+    }
+
+    if (filters.size) {
+      result = result.filter(p => p.size === filters.size);
+    }
+
+    if (filters.color) {
+      result = result.filter(p => p.color === filters.color);
+    }
+
+    setFilteredProducts(result);
+    setLoading(false);
+  }, [filters, product]);
+
+  useEffect(() => {
+    setFilteredProducts(product);
+  }, [product]);
+
+  useEffect(() => {
+    applyFilters();
+  }, [filters, applyFilters]);
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>, filterName: keyof typeof filters) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterName]: e.target.value
+    }));
+  };
+
+  if (product.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p>No products available</p>
+      </div>
+    );
   }
 
   return (
@@ -49,7 +76,7 @@ function Products() {
       <div className="max-w-[90%] mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Our Collection</h1>
+          <h1 className="text-lg md:text-3xl font-bold">Our Collection</h1>
           <button
             onClick={() => setShowFilters(!showFilters)}
             className="flex items-center text-gray-600 hover:text-gray-900"
@@ -64,7 +91,7 @@ function Products() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 p-4 bg-beige-50 rounded-lg">
             <select
               value={filters.category}
-              onChange={(e) => setFilters({ ...filters, category: e.target.value })}
+              onChange={(e) => handleFilterChange(e, 'category')}
               className="border border-gray-300 rounded-md p-2"
             >
               <option value="">All Categories</option>
@@ -76,10 +103,10 @@ function Products() {
 
             <select
               value={filters.priceRange}
-              onChange={(e) => setFilters({ ...filters, priceRange: e.target.value })}
+              onChange={(e) => handleFilterChange(e, 'priceRange')}
               className="border border-gray-300 rounded-md p-2"
             >
-              <option value="">Price Range</option>
+              <option value="">All Prices</option>
               <option value="0-50">Under $50</option>
               <option value="50-100">$50 - $100</option>
               <option value="100-200">$100 - $200</option>
@@ -88,10 +115,10 @@ function Products() {
 
             <select
               value={filters.size}
-              onChange={(e) => setFilters({ ...filters, size: e.target.value })}
+              onChange={(e) => handleFilterChange(e, 'size')}
               className="border border-gray-300 rounded-md p-2"
             >
-              <option value="">Size</option>
+              <option value="">All Sizes</option>
               <option value="xs">XS</option>
               <option value="s">S</option>
               <option value="m">M</option>
@@ -101,10 +128,10 @@ function Products() {
 
             <select
               value={filters.color}
-              onChange={(e) => setFilters({ ...filters, color: e.target.value })}
+              onChange={(e) => handleFilterChange(e, 'color')}
               className="border border-gray-300 rounded-md p-2"
             >
-              <option value="">Color</option>
+              <option value="">All Colors</option>
               <option value="black">Black</option>
               <option value="white">White</option>
               <option value="beige">Beige</option>
@@ -118,9 +145,8 @@ function Products() {
           <div className="text-center py-12">Loading...</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <div key={product.id} className="group put bg-[#e7e3e3]/20 hover:shadow-2xl rounded-xl p-1">
-                {/* Wrap Only the Image in Link */}
                 <Link to={`/product/${product.id}`} className="block">
                   <div className="relative shadow-2xl aspect-w-1 h-[50dvh] aspect-h-1 w-full overflow-hidden rounded-lg group">
                     <img
@@ -128,14 +154,12 @@ function Products() {
                       alt={product.name}
                       className="w-full h-[60dvh] object-cover scale-100 object-center"
                     />
-                    {/* Overlay on Hover */}
                     <div className="absolute h-full w-full bg-black/10 top-0 right-0 transition-opacity duration-300 flex justify-end p-4">
-                      {/* Buttons on Right */}
                       <div className="flex flex-col space-y-4">
-                        <button className="text-2xl shadow-2xl px-4 py-4 text-BWhite bg-white rounded-full hover:bg-BWhite/40 hover:text-white">
+                        <button className="text-2xl shadow-2xl p-2 text-BWhite bg-white rounded-full hover:bg-BWhite/40 hover:text-white">
                           <FaCartPlus />
                         </button>
-                        <button className="text-2xl shadow-2xl px-4 py-4 text-BWhite bg-white rounded-full hover:bg-BWhite/40 hover:text-white">
+                        <button className="text-2xl shadow-2xl p-2 text-BWhite bg-white rounded-full hover:bg-BWhite/40 hover:text-white">
                           <FaHeart />
                         </button>
                       </div>
@@ -143,7 +167,6 @@ function Products() {
                   </div>
                 </Link>
 
-                {/* Keep the Text Outside the Link */}
                 <div className="p-4">
                   <div className="flex justify-between">
                     <h3 className="font-bold text-gray-800 text-lg truncate">{product.name}</h3>
@@ -152,15 +175,18 @@ function Products() {
                       <span className="text-black">{product.ratio}</span>
                     </p>
                   </div>
-                  <p className="font-extralight text-gray-800 truncate">{product.description}</p>
+                  {/* <p className="font-extralight text-gray-800 truncate">{product.category_id}</p> */}
                   <Link to={`/product/${product.id}`}>
-                    <p className="font-extralight text-gray-800 text-xs truncate">Read more....</p>
+                    <p className="font-extralight text-gray-800 text-xs truncate">{product.description} Read more...</p>
                   </Link>
-                  <p className="text-gray-600 font-bold mt-2">${product.price}</p>
+                  
+                  <div className='flex gap-2 items-center'>
+                    <p className="text-gray-600 font-bold mt-2">${product.price}</p>
+                    {product.Discount_Price > 0 && <p className="text-gray-400 font-thin text-[0.9rem] mt-2 line-through">${product.Discount_Price}</p>}
+                  </div>
                 </div>
               </div>
             ))}
-
           </div>
         )}
       </div>
