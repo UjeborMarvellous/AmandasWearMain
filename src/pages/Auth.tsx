@@ -57,23 +57,28 @@ function Auth() {
     try {
       setLoading(true);
       setError('');
+
+      // 1. Get the returnTo parameter from current URL or use default
+      const searchParams = new URLSearchParams(window.location.search);
+      let returnTo = searchParams.get('returnTo');
       
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      // 2. If no returnTo, check if we came from checkout page
+      if (!returnTo && window.location.pathname === '/checkout') {
+        returnTo = '/checkout';
+      }
+      
+      // 3. Default to '/products' if no specific returnTo
+      returnTo = returnTo || '/products';
+      
+      // 4. Create redirect URL (no trailing #)
+      const redirectTo = `${window.location.origin}/auth/callback?returnTo=${encodeURIComponent(returnTo)}`;
+
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback?returnTo=${encodeURIComponent(
-            new URLSearchParams(location.search).get('returnTo') || '/'
-          )}`
-        }
+        options: { redirectTo }
       });
 
       if (error) throw error;
-      
-      // If we have data, redirect
-      if (data) {
-        const returnUrl = new URLSearchParams(location.search).get('returnTo');
-        navigate(returnUrl || '/');
-      }
     } catch (error) {
       console.error('Google sign in error:', error);
       setError('Failed to sign in with Google. Please try again.');

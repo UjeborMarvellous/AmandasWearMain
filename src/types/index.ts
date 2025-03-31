@@ -9,6 +9,10 @@ export interface Product {
   colors: string[];
   inStock: boolean;
   ratio: number;
+  size: string;
+  color: string;
+  Discount_Price: number;
+
 }
 
 export interface CartItem {
@@ -17,4 +21,5 @@ export interface CartItem {
   quantity: number;
   size: string;
   color: string;
+  Discount_Price: number;
 }
