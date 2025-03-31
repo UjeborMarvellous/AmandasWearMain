@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, User, Search, LogOut } from 'lucide-react';
+import { User, Search, LogOut } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { supabase } from '../lib/supabase';
 import { User as SupabaseUser } from '@supabase/supabase-js';
 import SearchBar from './SearchBar';
 import { Product } from '../types';
+import { FaCartPlus } from "react-icons/fa";
 
 interface NavbarProps {
   searchTerm: string;
@@ -121,9 +122,9 @@ function Navbar({ searchTerm, onSearch, products }: NavbarProps) {
               )}
 
               <Link to="/cart" className="text-white p-2 hover:text-gray-200 transition-colors relative" aria-label="Shopping cart">
-                <ShoppingBag className="h-5 w-5" />
+                <FaCartPlus className="h-5 w-5" />
                 {cart.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-black text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
                     {cart.reduce((total, item) => total + (item.quantity || 1), 0)}
                   </span>
                 )}

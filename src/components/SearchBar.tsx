@@ -1,6 +1,7 @@
 // components/SearchBar.tsx
 import { useState, useEffect } from 'react';
 import { Product } from '../types';
+import { IoClose } from "react-icons/io5";
 
 interface SearchBarProps {
   products: Product[];
@@ -45,7 +46,7 @@ const SearchBar = ({
         <input
           type="text"
           placeholder={placeholder}
-          className="w-full py-1 px-4 pr-10 rounded-full border border-gray-500 shadow-lg  bg-transparent focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition-all"
+          className="w-full py-1 px-4 pr-10 border-b border-white shadow-lg  bg-transparent focus:outline-none focus:ring-b focus:ring-white focus:border-transparent transition-all"
           value={localSearchTerm}
           onChange={(e) => setLocalSearchTerm(e.target.value)}
           onFocus={() => setIsFocused(true)}
@@ -60,9 +61,7 @@ const SearchBar = ({
               onClick={clearSearch}
               className="text-gray-500 hover:text-red-500 transition-colors"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-              </svg>
+              <IoClose className="h-5 w-5" />
             </button>
           ) : (
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -73,7 +72,7 @@ const SearchBar = ({
         
         {/* Search suggestions dropdown */}
         {isFocused && localSearchTerm && (
-          <div className="absolute z-10 mt-1 w-full bg-BWhite/80 border border-gray-600 rounded-md shadow-lg max-h-60 overflow-y-auto">
+          <div className="absolute z-10 mt-1 w-full bg-BWhite/80 border-b border-white shadow-lg max-h-60 overflow-y-auto">
             {products
               .filter(product => 
                 product.name.toLowerCase().includes(localSearchTerm.toLowerCase())

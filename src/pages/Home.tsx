@@ -1,6 +1,6 @@
 'use client';
 
-// import React from 'react';
+import React from 'react';
 import ReactCookieBot from 'react-cookiebot';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
@@ -13,7 +13,7 @@ function Home() {
       <ReactCookieBot domainGroupId={domainGroupId} />
       {/* Hero Section */}
       <div className="h-screen">
-        <h1 className="text-[550%] 2xl:mt-[5%] lg:mt-[5%] md:mt-[26%] sm:mt-[10%] mt-[10%] text-center font-extrabold tracking-tight text-white sm:text-5xl md:text-[6.5rem] lg:text-[9rem] 2xl:text-[900%]">
+        <h1 className="text-[550%] 2xl:mt-[5%] lg:mt-[5%] md:mt-[26%] sm:mt-[10%] mt-[10%] text-center font-extrabold tracking-tight text-white sm:text-5xl md:text-[6.5rem] lg:text-[9rem] 2xl:text-[1250%]">
           FASHION MEETS
         </h1>
         <div className="con ">
@@ -26,10 +26,10 @@ function Home() {
             <div className="absolut inset-0 bg-opacity-90"></div>
           </div>
           <div className=" relative mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 2xl:mt-auto lg:mt-auto md:mt-auto sm:-mt-[14%] -mt-[14%]">
-            <h1 className="text-[550%] text-center font-extrabold tracking-tight text-white sm:text-5xl md:text-[6.5rem] lg:text-[9rem] 2xl:text-[900%]">
+            <h1 className="text-[550%] text-center font-extrabold tracking-tight text-white sm:text-5xl md:text-[6.5rem] lg:text-[9rem] 2xl:text-[14rem]">
               LUXURY
             </h1>
-            <div className="2xl:mt-[5%] lg:mt-[5%] md:mt-[5%] sm:mt-[3%] mt-[3%] text-center">
+            <div className="2xl:mt-[7%] lg:mt-[7%] md:mt-[7%] sm:mt-[3%] mt-[3%] text-center">
               <Link
                 to="/products"
                 className="inline-flex items-center 2xl:px-32 lg:px-32 md:px-32 sm:px-32 px-10 font-semibold py-3 border border-transparent text-base rounded-md text-gray-900 bg-white hover:bg-BWhite/90 hover:text-white"
