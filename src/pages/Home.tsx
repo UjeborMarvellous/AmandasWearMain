@@ -1,32 +1,33 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import ReactCookieBot from 'react-cookiebot';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import ModelImage from '../components/Images/Model.png';
+import { ArrowRight, X } from 'lucide-react';
+import ModelImage from '../components/Images/ModelsMain..png';
+import Footer from '../components/Footer';
 
 const domainGroupId = '610ba6a1-cac8-47f6-8058-62fbffc6b31d';
 function Home() {
+  
   return (
-    <div className=" bg-BWhite/80 fixed w-full h-screen">
+    <div className="bg-BWhite/80 w-full relative">
       <ReactCookieBot domainGroupId={domainGroupId} />
       {/* Hero Section */}
-      <div className="h-screen">
-        <h1 className="text-[550%] 2xl:mt-[5%] lg:mt-[5%] md:mt-[26%] sm:mt-[10%] mt-[10%] text-center font-extrabold tracking-tight text-white sm:text-5xl md:text-[6.5rem] lg:text-[9rem] 2xl:text-[1250%]">
+      <div className="overflow-hidden h-screen">
+        <h1 className="text-[550%] md:leading-[90%] 2xl:mt-[10%] lg:mt-[5%] md:mt-[16%] sm:mt-[10%] mt-[10%] text-center font-extrabold tracking-tight text-white sm:text-4xl md:text-[8.5rem] lg:text-[9rem] 2xl:text-[1250%]">
           FASHION MEETS
         </h1>
-        <div className="con ">
-          <div className="absolute inset-0  scale-100 2xl:ml-[6%]">
+        <div className="con relative">
+          <div className="absolute inset-0 2xl:ml-[6%]">
             <img
               src={ModelImage}
               alt="Fashion hero"
-              className="w-full h-full object-cover scale-110 "
+              className="w-full scale-150 h-full lg:object-contain object-cover"
             />
-            <div className="absolut inset-0 bg-opacity-90"></div>
           </div>
-          <div className=" relative mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 2xl:mt-auto lg:mt-auto md:mt-auto sm:-mt-[14%] -mt-[14%]">
-            <h1 className="text-[550%] text-center font-extrabold tracking-tight text-white sm:text-5xl md:text-[6.5rem] lg:text-[9rem] 2xl:text-[14rem]">
+          <div className="relative mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 2xl:mt-auto lg:mt-auto md:mt-auto sm:-mt-[14%] -mt-[14%]">
+            <h1 className="text-[450%] mt-12 text-center font-extrabold tracking-tight text-white sm:text-5xl md:text-[6.5rem] lg:text-[9rem] 2xl:text-[14rem]">
               LUXURY
             </h1>
             <div className="2xl:mt-[7%] lg:mt-[7%] md:mt-[7%] sm:mt-[3%] mt-[3%] text-center">
@@ -42,27 +43,10 @@ function Home() {
         </div>
       </div>
 
-      {/* Featured Categories */}
-      {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-12">
-          Featured Collections
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {['Dresses', 'Accessories', 'Outerwear'].map((category) => (
-            <div key={category} className="relative group">
-              <div className="relative h-80 w-full overflow-hidden rounded-lg bg-white">
-                <img
-                  src={`https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80`}
-                  alt={category}
-                  className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-              <h3 className="mt-6 text-sm text-gray-500">{category}</h3>
-              <p className="text-base font-semibold text-gray-900">Shop Collection</p>
-            </div>
-          ))}
-        </div>
-      </div> */}
+      {/* Footer positioned on top of image */}
+      <div className="lg:mt-auto md:-mt-[40%] -mt-[26%] bottom-0 left-0 w-full z-40">
+        <Footer />
+      </div>
     </div>
   );
 }

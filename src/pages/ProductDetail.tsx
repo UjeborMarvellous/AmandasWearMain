@@ -47,10 +47,11 @@ function ProductDetail() {
       if (error) throw error;
       if (data) {
         setProduct(data);
-        if (data.sizes && data.sizes.length > 0) {
+        // Initialize selectedSize and selectedColor if available
+        if (data.sizes && data.sizes.length > 0 && !selectedSize) {
           setSelectedSize(data.sizes[0]);
         }
-        if (data.colors && data.colors.length > 0) {
+        if (data.colors && data.colors.length > 0 && !selectedColor) {
           setSelectedColor(data.colors[0]);
         }
       }
@@ -77,7 +78,7 @@ function ProductDetail() {
         .eq('product_id', id);
 
       if (error) throw error;
-      
+
       // Transform the data to match your Review interface
       const formattedReviews: Review[] = (data || []).map((item: any) => ({
         id: item.id,
@@ -86,7 +87,7 @@ function ProductDetail() {
         created_at: item.created_at,
         profiles: item.profiles
       }));
-      
+
       setReviews(formattedReviews);
     } catch (error) {
       console.error('Error fetching reviews:', error);
@@ -130,12 +131,12 @@ function ProductDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product Images */}
           <div className="space-y-4">
-            <div className="aspect-w-1 aspect-h-1 h-[75dvh] w-full overflow-hidden rounded-lg">
+            <div className="aspect-w-1 aspect-h-1 lg:h-[75dvh] h-auto w-full overflow-hidden rounded-lg">
               {product.images && product.images.length > 0 && (
                 <img
                   src={product.images[selectedImage]}
                   alt={product.name}
-                  className=" w-full h-[95dvh] object-cover object-center"
+                  className=" w-full lg:h-[95dvh] h-[50dvh] object-cover object-center"
                 />
               )}
             </div>
@@ -168,16 +169,21 @@ function ProductDetail() {
               {/* Size Selection */}
               {product.sizes && product.sizes.length > 0 && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Size
-                  </label>
+                  {/* MODIFIED: Display Label and Selected Size inline */}
+                  <div className="flex items-baseline mb-2">
+                     <span className="text-sm font-medium text-gray-700 mr-2">Size</span>
+                     {selectedSize && (
+                       <span className="text-sm font-semibold text-gray-900">{selectedSize}</span>
+                     )}
+                  </div>
+                  {/* END MODIFIED */}
                   <div className="grid grid-cols-5 gap-2">
                     {product.sizes.map((size) => (
                       <button
                         key={size}
                         onClick={() => setSelectedSize(size)}
                         className={`py-2 text-sm font-medium rounded-md ${selectedSize === size
-                            ? 'bg-gray-900 text-white'
+                            ? 'bg-gray-900 text-white' // You might want a different style for selected button now, e.g., border-gray-900
                             : 'bg-white border border-gray-300 text-gray-900 hover:bg-gray-50'
                           }`}
                       >
@@ -185,22 +191,28 @@ function ProductDetail() {
                       </button>
                     ))}
                   </div>
+                   {/* REMOVED previous selected size display here */}
                 </div>
               )}
 
               {/* Color Selection */}
               {product.colors && product.colors.length > 0 && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Color
-                  </label>
+                  {/* MODIFIED: Display Label and Selected Color inline */}
+                   <div className="flex items-baseline mb-2">
+                     <span className="text-sm font-medium text-gray-700 mr-2">Color</span>
+                     {selectedColor && (
+                       <span className="text-sm font-semibold text-gray-900">{selectedColor}</span>
+                     )}
+                   </div>
+                   {/* END MODIFIED */}
                   <div className="grid grid-cols-5 gap-2">
                     {product.colors.map((color) => (
                       <button
                         key={color}
                         onClick={() => setSelectedColor(color)}
                         className={`py-2 text-sm font-medium rounded-md ${selectedColor === color
-                            ? 'bg-gray-900 text-white'
+                            ? 'bg-gray-900 text-white' // You might want a different style for selected button now, e.g., border-gray-900
                             : 'bg-white border border-gray-300 text-gray-900 hover:bg-gray-50'
                           }`}
                       >
@@ -208,6 +220,7 @@ function ProductDetail() {
                       </button>
                     ))}
                   </div>
+                   {/* REMOVED previous selected color display here */}
                 </div>
               )}
             </div>
@@ -216,7 +229,8 @@ function ProductDetail() {
               <button
                 onClick={handleAddToCart}
                 disabled={!selectedSize || !selectedColor || addingToCart}
-                className="w-full bg-gray-900 text-white py-3 px-4 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-800 disabled:bg-gray-400"
+                // Hover animation classes remain
+                className="w-full bg-gray-900 text-white py-3 px-4 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-800 disabled:bg-gray-400 transition duration-150 ease-in-out hover:scale-105"
               >
                 {addingToCart ? (
                   <span>Adding to Cart...</span>

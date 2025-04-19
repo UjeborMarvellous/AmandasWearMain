@@ -25,6 +25,23 @@ export default {
         serif: ['Playfair Display', 'serif'],
         sans: ['Inter', 'sans-serif'],
       },
+      keyframes: {
+        'scroll-left': {
+          '0%': { transform: 'translateX(20%)' }, // Start off-screen right
+          '100%': { transform: 'translateX(-80%)' }, // End off-screen left
+        },
+        // Include slideDownFadeIn if used elsewhere
+        slideDownFadeIn: {
+          'from': { opacity: '0', transform: 'translateY(-100%)' },
+          'to': { opacity: '1', transform: 'translateY(0)' },
+        }
+      },
+      animation: {
+        // Adjust duration (e.g., 20s) as needed for speed
+        marquee: 'scroll-left 100s linear infinite',
+        // Keep the slide down animation if needed
+        slideDownFadeIn: 'slideDownFadeIn 0.7s ease-out forwards',
+      }
     },
   },
   plugins: [],

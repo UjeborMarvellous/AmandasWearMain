@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@keyframes scroll-left {
+    0% {
+      transform: translateX(20%); /* Start off-screen right */
+    }
+    100% {
+      transform: translateX(-80%); /* End off-screen left */
+    }
+  }
+  
+  /* Class to apply the animation */
+  .animate-marquee {
+    display: inline-block; /* Important for transform to work correctly */
+    white-space: nowrap; /* Keep text on a single line */
+    animation: scroll-left 10s linear infinite; /* duration timing iteration */
+  }
+  
+  /* Optional: Pause on hover */
+  .marquee-container:hover .animate-marquee {
+    animation-play-state: paused;
+  }

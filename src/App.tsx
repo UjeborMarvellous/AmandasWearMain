@@ -20,6 +20,7 @@ import WhatsApp from './pages/WhatsAppButton';
 import AuthCallback from './pages/AuthCallback';
 import { Product } from './types';
 import { supabase } from './lib/supabase';
+import ScrollToTop from './pages/ScrollToTop';
 
 async function fetchProducts(): Promise<Product[]> {
   const { data, error } = await supabase.from('products').select('*');
@@ -109,6 +110,7 @@ function Layout() {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Layout />
     </Router>
   );

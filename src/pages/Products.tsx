@@ -5,6 +5,7 @@ import { SlidersHorizontal } from 'lucide-react';
 import { FaCartPlus, FaHeart } from "react-icons/fa";
 import { MdOutlineKeyboardDoubleArrowRight, MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { IoIosStar } from "react-icons/io";
+import NotFound from '../components/Images/NotFound.png';
 
 interface ProductsProps {
   product: Product[];
@@ -23,7 +24,7 @@ function Products({ product }: ProductsProps) {
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 8;
+  const productsPerPage = 16;
 
   const applyFilters = useCallback(() => {
     setLoading(true);
@@ -75,17 +76,19 @@ function Products({ product }: ProductsProps) {
 
   if (product.length === 0) {
     return (
-      <div className="text-center mt-[13%] h-[40dvh] item-center justify-center">
-        <p>No products available</p>
+      <div className="text-center h-full item-center justify-center">
+        <img src={NotFound} alt="Not Found" className="w-[40%] h-[40%] object-cover justify-center items-center flex blocks mx-auto"
+         />
+        <p className='text-center font-medium text-2xl text-red-900'>Product Not Found</p>
       </div>
     );
   }
 
   return (
     <div className="bg-white">
-      <div className="max-w-[90%] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="lg:max-w-[90%] mx-[1%] lg:mx-auto px-1 sm:px-2 lg:px-8 py-12">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex mx-[3%] justify-between items-center mb-8">
           <h1 className="text-lg md:text-3xl font-bold">Our Collection</h1>
           <button
             onClick={() => setShowFilters(!showFilters)}
@@ -139,22 +142,23 @@ function Products({ product }: ProductsProps) {
           <div className="text-center py-12">Loading...</div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 gap-2">
               {paginatedProducts.map((product) => (
-                <div key={product.id} className="group put bg-[#e7e3e3]/20 hover:shadow-2xl rounded-xl p-1">
+                <div key={product.id} className="group put bg-[#e7e3e3]/20 hover:shadow-2xl lg:rounded-xl rounded-md p-1">
                   <Link to={`/product/${product.id}`} className="block">
-                    <div className="relative shadow-2xl aspect-w-1 h-[50dvh] aspect-h-1 w-full overflow-hidden rounded-lg group">
+                    <div className="relative shadow-2xl aspect-w-1 lg:h-[50dvh] h-[30dvh] aspect-h-1 w-full overflow-hidden lg:rounded-lg rounded-md group">
                       <img
                         src={product.images[0]}
                         alt={product.name}
-                        className="w-full h-[60dvh] object-cover scale-100 object-center"
+                        loading='lazy'
+                        className="w-full lg:h-[60dvh] h-[35dvh] object-cover scale-100 object-center"
                       />
                       <div className="absolute h-full w-full bg-black/10 top-0 right-0 transition-opacity duration-300 flex justify-end p-4">
                         <div className="flex flex-col space-y-4">
-                          <button className="text-2xl shadow-2xl p-2 text-BWhite bg-white rounded-full hover:bg-BWhite/40 hover:text-white">
+                          <button className="lg:text-2xl text-sm shadow-2xl p-2 text-BWhite bg-white rounded-full hover:bg-BWhite/40 hover:text-white">
                             <FaCartPlus />
                           </button>
-                          <button className="text-2xl shadow-2xl p-2 text-BWhite bg-white rounded-full hover:bg-BWhite/40 hover:text-white">
+                          <button className="lg:text-2xl text-sm shadow-2xl p-2 text-BWhite bg-white rounded-full hover:bg-BWhite/40 hover:text-white">
                             <FaHeart />
                           </button>
                         </div>
@@ -164,17 +168,17 @@ function Products({ product }: ProductsProps) {
 
                   <div className="p-4">
                     <div className="flex justify-between">
-                      <h3 className="font-bold text-gray-800 text-lg truncate">{product.name}</h3>
-                      <p className="text-yellow-400 my-auto font-bold flex gap-2">
+                      <h3 className="font-bold text-gray-800 lg:text-lg text-[13px] truncate">{product.name}</h3>
+                      <p className="text-yellow-400 my-auto lg:text-lg text-[12px] font-bold flex gap-2">
                         <IoIosStar className="mt-1" />
                         <span className="text-black">{product.ratio}</span>
                       </p>
                     </div>
                     <Link to={`/product/${product.id}`}>
-                      <p className="font-extralight text-gray-800 text-xs truncate">{product.description} <br /> Read more...</p>
+                      <p className="font-extralight text-gray-800 truncate lg:text-xs text-[11px]">{product.description} <br /> Read more...</p>
                     </Link>
                     <div className='flex gap-2 items-center'>
-                    <p className="text-gray-600 font-bold mt-2">${product.price}</p>
+                    <p className="text-gray-600 font-medium lg:text-lg text-[13px] mt-2">${product.price}</p>
                     {product.Discount_Price > 0 && <p className="text-gray-400 font-thin text-[0.9rem] mt-2 line-through">${product.Discount_Price}</p>}
                     <div />
                   </div>
