@@ -1,4 +1,5 @@
 import React from 'react';
+import MainAnanda from '../components/Images/MainAmandas.jpg';
 
 function About() {
   return (
@@ -14,8 +15,8 @@ function About() {
           <div className="absolute inset-0 bg-gray-900 bg-opacity-60"></div>
         </div>
         <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-serif text-white text-center">
-            About Amandaswear
+          <h1 className="text-4xl uppercase font-semibold font-serif text-white text-center">
+            About Us
           </h1>
         </div>
       </div>
@@ -39,7 +40,7 @@ function About() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <img
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+              src={MainAnanda}
               alt="Fashion"
               className="rounded-lg"
             />

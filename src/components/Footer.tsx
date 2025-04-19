@@ -4,7 +4,7 @@ import { Instagram, Facebook, Twitter } from 'lucide-react';
 
 function Footer() {
   return (
-    <footer className="bg-BtnColor border-t -mb-[20%] ">
+    <footer className="bg-BtnColor border-t absolute w-full ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}

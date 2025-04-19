@@ -62,7 +62,7 @@ function Cart() {
         <span className="ml-2">Back to Product</span>
       </Link>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-3xl font-serif mb-8">Shopping Cart</h1>
+        <h1 className="text-3xl font-serif mb-8">Your Cart</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Cart Items */}
@@ -71,19 +71,19 @@ function Cart() {
               {cart.map((item) => (
                 <div
                   key={item.id || `${item.product.id}-${item.size}-${item.color}-${Date.now()}`}
-                  className="flex items-center space-x-4 p-4 bg-white border rounded-lg"
+                  className="flex items-center lg:space-x-4 space-x-2 lg:p-4 p-2 bg-white border rounded-lg"
                 >
                   <img
                     src={item.product.images[0]}
                     alt={item.product.name}
-                    className="w-24 h-24 object-cover rounded-md"
+                    className="lg:w-24 lg:h-24 h-10 w-10 object-cover rounded-md"
                   />
-                  <div className="flex-1 min-w-0">
-                    <h3 className="2xl:text-lg lg:text-lg md:text-lg sm:text-sm text-sm font-medium">{item.product.name}</h3>
-                    <p className="text-sm text-gray-600">
+                  <div className="flex-1 min-w-0 whitespace-nowrap">
+                    <h3 className="2xl:text-lg lg:text-lg md:text-lg sm:text-xs text-xs font-medium">{item.product.name}</h3>
+                    <p className="text-sm my-1 text-gray-600">
                       Size: {item.size} | Color: {item.color}
                     </p>
-                    <p className="text-lg font-medium mt-1">
+                    <p className="lg:text-lg font-medium mt-1">
                       ${item.product.price.toFixed(2)}
                     </p>
                   </div>
@@ -92,9 +92,9 @@ function Cart() {
                       onClick={() => updateQuantity(item.product.id, Math.max(1, item.quantity - 1))}
                       className="p-1 hover:bg-gray-100 rounded"
                     >
-                      <Minus className="h-4 w-4" />
+                      <Minus className="lg:h-4 h-4 lg:w-4 w-4" />
                     </button>
-                    <span className="w-8 text-center">{item.quantity}</span>
+                    <span className="lg:w-8 w-2 text-center">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
                       className="p-1 hover:bg-gray-100 rounded"
