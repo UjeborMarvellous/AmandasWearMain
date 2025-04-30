@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Search, LogOut, X , ArrowRight} from 'lucide-react';
+import { User, Search, LogOut, ArrowRight} from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { supabase } from '../lib/supabase';
 import { User as SupabaseUser } from '@supabase/supabase-js';
@@ -16,8 +16,8 @@ interface NavbarProps {
 
 function Navbar({ searchTerm, onSearch, products }: NavbarProps) {
 
-  const [showPromoBanner, setShowPromoBanner] = useState<boolean>(true);
-  const promoText: string = "🎉 Limited Time Offer: Get 10% OFF Your Entire Order! 🎉 From 21 April to 28 April";
+  // const [showPromoBanner, setShowPromoBanner] = useState<boolean>(true);
+  // const promoText: string = "🎉 Limited Time Offer: Get 10% OFF Your Entire Order! 🎉 From 21 April to 28 April";
 
   const navigate = useNavigate();
   const cart = useStore((state) => state.cart);
@@ -79,38 +79,38 @@ function Navbar({ searchTerm, onSearch, products }: NavbarProps) {
 
   return (
     <>
-    <div className="promo">
-      {showPromoBanner && (
-        <div
-          // Banner styling (positioning, background, etc.)
-          className="top-0 left-0 right-0 z-50 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 text-white p-3 text-sm font-semibold shadow-lg animate-slideDownFadeIn flex items-center space-x-4 overflow-hidden" // *** Add overflow-hidden ***
+{/*     <div className="promo"> */}
+{/*       {showPromoBanner && ( */}
+{/*         <div */}
+{/*           // Banner styling (positioning, background, etc.) */}
+{/*           className="top-0 left-0 right-0 z-50 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 text-white p-3 text-sm font-semibold shadow-lg animate-slideDownFadeIn flex items-center space-x-4 overflow-hidden" // *** Add overflow-hidden ***
           role="alert"
-        >
+        > */}
           {/* Container for the marquee effect - hides overflowing text */}
           {/* Added marquee-container class for optional hover pause */}
-          <div className="marquee-container flex-grow overflow-hidden whitespace-nowrap relative">
+{/*           <div className="marquee-container flex-grow overflow-hidden whitespace-nowrap relative"> */}
             {/* The actual text element that gets animated */}
             {/* Use 'animate-marquee' class (from CSS or Tailwind config) */}
-            <span className="animate-marquee">
+{/*             <span className="animate-marquee"> */}
               {/* You often need to repeat the text for a seamless loop */}
-              {promoText}
+{/*               {promoText} */}
               {/* Add spacing or a visual separator if desired */}
-              <span aria-hidden="true" className="mx-6">||</span>
+{/*               <span aria-hidden="true" className="mx-6">||</span>
               {promoText}
             </span>
-          </div>
+          </div> */}
 
           {/* Close Button */}
-          <button
+{/*           <button
             onClick={() => setShowPromoBanner(false)}
             className="p-1 rounded-full hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 flex-shrink-0" // Keep flex-shrink-0
             aria-label="Dismiss promotional banner"
           >
             <X className="h-4 w-4" />
-          </button>
-        </div>
-      )}
-      </div>
+          </button> */}
+        // </div>
+      // )}
+      // </div>
     <nav className={`${bgColor} bg-BWhite/80 text-white top-0 sticky z-50 shadow-2xl transition-colors duration-300`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 rounded-2xl lg:px-8">
         <div className="flex justify-between h-20">
